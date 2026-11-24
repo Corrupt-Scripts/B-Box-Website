@@ -5,7 +5,7 @@
 
 /* ---------- EDIT ME: site settings ---------- */
 const CONFIG = {
-  email: 'bboxuk.info@gmail.com',          // shown in Contact + used for the contact form
+  email: 'support@b-boxuk.co.uk',          // shown in Contact + used for the contact form
   phone: '07979 962839',
   address: '',                              // leave blank to hide the address on the Contact page
   formEndpoint: '',                         // e.g. a Formspree URL. Leave blank to open the visitor's email app instead.
