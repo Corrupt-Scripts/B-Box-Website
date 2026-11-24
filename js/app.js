@@ -37,7 +37,7 @@ const PRODUCTS = [
     specs: ['Programmer, layout, patch, cues and effects', 'Command line with Art-Net output', 'Licence key lives in your B-Box account']
   },
   {
-    id: 'bbox-android', checkoutUrl: '',   // paste the Polar checkout link here
+    id: 'bbox-android', checkoutUrl: 'https://buy.polar.sh/polar_cl_mG9rPaEXeJ9bWudzxwmwg4Q0pCt2NdRYdzqG61ebJR1',   // paste the Polar checkout link here
     kind: 'software', art: 'android', tag: 'Android app', name: 'B-Box Android',
     price: 19.99, unit: 'per licence, inc VAT',
     blurb: 'Control Art-Net and sACN DMX adaptors from your Android phone or tablet, over Bluetooth or Wi-Fi.',
