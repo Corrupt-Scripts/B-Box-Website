@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Products &amp; DMX calculator | B-Box</title>
+  <meta name="description" content="Wired, wireless and CRMX light controllers, the B-Box lighting desk app and a free DMX calculator for film and TV lighting.">
+  <meta name="theme-color" content="#0b0c0e">
+  <link rel="icon" href="assets/favicon.png" type="image/png" sizes="64x64">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header" id="top">
+    <div class="wrap header-in">
+      <a class="logo" href="index.html" aria-label="B-Box lighting control, home"><img src="assets/logo.png" alt="B-Box lighting control" width="129" height="46"></a>
+
+      <nav class="nav" id="nav" aria-label="Main">
+        <a href="index.html">Welcome</a>
+        <a href="products.html" aria-current="page">Products</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="account.html">Account</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="cart-btn" id="cartOpen" aria-label="Open basket">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 4h2l2.2 11h10.6L20 7H6.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="19.5" r="1.4" fill="currentColor"/><circle cx="17" cy="19.5" r="1.4" fill="currentColor"/></svg>
+          <span class="cart-count" id="cartCount" hidden>0</span>
+        </button>
+        <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="nav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+<section class="section first" id="products" aria-labelledby="productsTitle">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Products</span>
+            <h2 id="productsTitle">Controllers, software and tools</h2>
+            <p class="sub">Hardware for the rig, software for the desk. Prices are in pounds sterling and include VAT.</p>
+          </div>
+          <div class="filters" role="group" aria-label="Filter products">
+            <button class="chip is-on" data-filter="all" aria-pressed="true">All</button>
+            <button class="chip" data-filter="hardware" aria-pressed="false">Hardware</button>
+            <button class="chip" data-filter="software" aria-pressed="false">Software</button>
+          </div>
+        </div>
+
+        <div class="grid" id="productGrid"></div>
+        <!-- Lighting desk -->
+        <div class="android desk" id="desk">
+          <div class="android-head">
+            <div>
+              <span class="eyebrow">Lighting desk app</span>
+              <h3>B-Box Lighting Desk</h3>
+              <p>Run your rig from your computer. Program looks, lay fixtures out on a plan, record cues, and send it all out over Art-Net.</p>
+            </div>
+            <div class="android-buy">
+              <div class="price" data-price-of="bbox-desk-app"></div>
+              <span data-buy="bbox-desk-app"></span>
+            </div>
+          </div>
+
+          <div class="android-shots">
+            <figure>
+              <img src="assets/desk-programmer.jpg" alt="B-Box Lighting Desk, Desk page: a programmer grid of fixtures, intensity and colour controls, and a record cue panel" loading="lazy">
+              <figcaption><strong>Desk</strong><span>Pick fixtures, set intensity and colour, then record a cue with its fade time.</span></figcaption>
+            </figure>
+            <figure>
+              <img src="assets/desk-faders.jpg" alt="B-Box Lighting Desk, Faders page: banks of 32 faders labelled by fixture, with a universe selector and a Release all button" loading="lazy">
+              <figcaption><strong>Faders</strong><span>Take over any channel with a fader, labelled by fixture, and release it when you're done.</span></figcaption>
+            </figure>
+            <figure>
+              <img src="assets/desk-layout.jpg" alt="B-Box Lighting Desk, Layout page: fixtures placed on a stage plan with drawing tools and a background image option" loading="lazy">
+              <figcaption><strong>Layout</strong><span>Place your fixtures on a stage or floor plan and select them right on the picture.</span></figcaption>
+            </figure>
+          </div>
+
+          <ul class="specs android-specs">
+            <li>Command line: 1 thru 10 @ 50, colour red, record cue 1, go</li>
+            <li>Faders for every channel, with Release all</li>
+            <li>Patch, cues, effects and output pages</li>
+            <li>Art-Net output with a live packet counter</li>
+            <li>Grand master, blackout, and Back and GO buttons</li>
+          </ul>
+        </div>
+
+        <!-- Android app -->
+        <div class="android" id="android">
+          <div class="android-head">
+            <div>
+              <span class="eyebrow">Android app</span>
+              <h3>B-Box Android</h3>
+              <p>Run your DMX from an Android phone or tablet. Connect over Bluetooth or Wi-Fi to Art-Net and sACN adaptors.</p>
+            </div>
+            <div class="android-buy">
+              <div class="price" data-price-of="bbox-android"></div>
+              <span data-buy="bbox-android"></span>
+            </div>
+          </div>
+
+          <div class="android-shots">
+            <figure>
+              <img src="assets/android-live.webp" alt="B-Box Android app, Live screen showing the output of channels 1 to 512, a grand master and cue buttons" loading="lazy">
+              <figcaption><strong>Live</strong><span>Watch all 512 channels, with a grand master, blackout and clear always on screen.</span></figcaption>
+            </figure>
+            <figure>
+              <img src="assets/android-channels.webp" alt="B-Box Android app, Channels screen with a grid of channels and a command line reading 1 thru 12 at 80" loading="lazy">
+              <figcaption><strong>Channels</strong><span>Pick channels, type commands like 1 THRU 12 @ 80, and recall groups.</span></figcaption>
+            </figure>
+            <figure>
+              <img src="assets/android-effects.webp" alt="B-Box Android app, Effects screen with LED tape types and effects such as Chase, Rainbow and Candle" loading="lazy">
+              <figcaption><strong>Effects</strong><span>Run effects on LED tape, from Chase and Rainbow to Candle and Twinkle.</span></figcaption>
+            </figure>
+          </div>
+
+          <ul class="specs android-specs">
+            <li>Cues with Back and Go buttons</li>
+            <li>LED tape modes: single, RGB, RGBW, RGBWW and bi-colour</li>
+            <li>Fixture control and a test screen</li>
+            <li>Try it free on channels 1&ndash;24</li>
+          </ul>
+        </div>
+
+        <!-- DMX calculator -->
+        <div class="calc-promo" id="calculator">
+          <div>
+            <span class="eyebrow">Free tool</span>
+            <h3>DMX address calculator</h3>
+            <p>Patch your rig in seconds. Build a library of your fixtures, tap one to put it on the next free address, and keep rigs, notes and photos for every job &mdash; all saved on your own device.</p>
+            <ul class="specs">
+              <li>Patch lists across universes, never splitting a fixture</li>
+              <li>Saved fixtures and rigs, with photos and notes</li>
+              <li>PDF export of your patch, saved list and photos</li>
+              <li>Works offline, with backup and restore</li>
+            </ul>
+            <div class="cta-row">
+              <a class="btn primary" href="calculator.html">Open the calculator</a>
+              <a class="btn ghost" href="calculator/index.html">Full screen / install as an app</a>
+            </div>
+          </div>
+          <img class="calc-promo-img" src="assets/calc-phones.webp" alt="DMX address calculator shown on two phones: setting up a rig, and the patch list with saved addresses" loading="lazy">
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="wrap foot">
+      <div>
+        <a class="logo" href="index.html" aria-label="B-Box lighting control, home"><img src="assets/logo.png" alt="B-Box lighting control" width="129" height="46"></a>
+        <p class="muted">Wired and wireless DMX and CRMX light controllers for film and TV.</p>
+      </div>
+      <nav class="foot-nav" aria-label="Footer">
+        <a href="products.html">Products</a>
+        <a href="#calculator">DMX calculator</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="account.html">Account</a>
+      </nav>
+    </div>
+    <div class="wrap foot-base">
+      <span>&copy; <span id="year">2026</span> B-Box. All rights reserved.</span>
+      <span>CRMX is a trademark of LumenRadio AB. All prices include VAT.</span>
+    </div>
+  </footer>
+
+  <!-- ============ BASKET DRAWER ============ -->
+  <div class="backdrop" id="backdrop" hidden></div>
+  <aside class="drawer" id="cart" aria-hidden="true" aria-label="Basket" tabindex="-1">
+    <div class="drawer-head">
+      <h2>Your basket</h2>
+      <button class="icon-btn" id="cartClose" aria-label="Close basket">&times;</button>
+    </div>
+    <ul class="cart-list" id="cartList"></ul>
+    <div class="cart-empty" id="cartEmpty">
+      <p>Your basket is empty.</p>
+      <a class="btn ghost sm" href="products.html" id="cartShop">Browse products</a>
+    </div>
+    <div class="cart-foot" id="cartFoot">
+      <dl class="totals">
+        <div><dt>VAT included (20%)</dt><dd id="tVat">£0.00</dd></div>
+        <div class="grand"><dt>Total (inc VAT)</dt><dd id="tTot">£0.00</dd></div>
+      </dl>
+      <p class="ship-note" id="shipNote" hidden>UK delivery for hardware is calculated at checkout.</p>
+      <button class="btn primary block" id="checkout" type="button">Checkout</button>
+      <p class="demo-note">Demo checkout &mdash; no payment is taken until a payment provider is connected.</p>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/firebase-config.js"></script>
+  <script type="module" src="js/fb.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

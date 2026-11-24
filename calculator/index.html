@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DMX Address Calculator</title>
+<meta name="theme-color" content="#0f0d14">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+  :root{
+    --bg:#0f0d14; --panel:#1a1622; --line:#2e2840; --text:#ece9f3; --muted:#9a93ab;
+    --accent:#a855f7; --accent2:#7c3aed; --warn:#f59e0b; --ok:#34d399;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:15px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;}
+  .wrap{max-width:720px;margin:0 auto;padding:16px;padding-top:calc(16px + env(safe-area-inset-top));padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+  h1{font-size:20px;margin:4px 0 14px;letter-spacing:.3px}
+  h1 span{color:var(--accent)}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
+  .panel h2{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:0 0 10px}
+  label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+  input{width:100%;background:#0c0a11;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:11px 10px;font-size:16px}
+  input:focus{outline:none;border-color:var(--accent)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .row{display:grid;grid-template-columns:1.5fr .7fr .7fr 38px 38px;gap:6px;align-items:end;margin-bottom:10px}
+  .row .head{font-size:12px;color:var(--muted)}
+  button{background:var(--line);color:var(--text);border:0;border-radius:10px;padding:11px 14px;font-size:15px;cursor:pointer}
+  button.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));font-weight:600}
+  button.icon{padding:11px 0;width:38px}
+  button.del{background:#2a1f33;color:#f0a4c0}
+  button.star{background:#241b33;color:var(--accent)}
+  button.star.saved{background:var(--accent2);color:#fff}
+  .btns{display:flex;gap:8px;flex-wrap:wrap}
+  .next{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .big{font-size:40px;font-weight:700;color:var(--accent);line-height:1}
+  .big small{font-size:15px;color:var(--muted);font-weight:500;margin-left:6px}
+  .sub{color:var(--muted);font-size:13px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.6px}
+  td.num{font-variant-numeric:tabular-nums}
+  tr.jump td{color:var(--warn)}
+  .warn{background:#2b200b;border:1px solid #5c4210;color:#fbd38d;border-radius:10px;padding:8px 10px;font-size:13px;margin-top:10px}
+  .toggle{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13px;color:var(--muted)}
+  .toggle input{width:auto}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{display:flex;align-items:center;background:#241b33;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .chip button{background:none;border-radius:0;padding:8px 12px;font-size:14px}
+  .chip .add b{color:var(--accent);font-weight:600;margin-left:6px}
+  .chip .x{padding:8px 10px;color:#f0a4c0;border-left:1px solid var(--line)}
+  .empty{color:var(--muted);font-size:13px}
+  .rig{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .rig:last-child{border-bottom:0}
+  .rig .meta{min-width:0}
+  .rig .name{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rig .btns button{padding:8px 12px;font-size:14px}
+  .saverow{display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:8px}
+  .status{font-size:12px;color:var(--muted);margin:-6px 0 12px}
+  .status.cloud{color:var(--ok)}
+  .tap{cursor:pointer;color:var(--accent);text-decoration:underline dotted;text-underline-offset:3px}
+  .big.tap{text-decoration:none}
+  #patch tr{cursor:pointer}
+  #patch tr:active td{background:#241b33}
+  #patch td.go{color:var(--accent);text-align:right;width:28px}
+  .addr{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
+  .addr:last-child{border-bottom:0}
+  .addr .a{font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;min-width:74px}
+  .addr .l{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .addr .t{color:var(--muted);font-size:12px}
+  .addr button{padding:6px 10px;font-size:13px}
+  .chip .ph{padding:8px 10px;border-left:1px solid var(--line);color:var(--muted)}
+  .chip .ph.has{color:var(--accent)}
+  .addr .pbtn{background:#241b33;color:var(--muted)}
+  .addr .pbtn.has{color:var(--accent)}
+  .addr .thumb{width:40px;height:40px;border-radius:8px;object-fit:cover;background:#0c0a11;flex:none}
+  .sheet{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:flex-end;justify-content:center;z-index:20}
+  .sheet.show{display:flex}
+  .sheet .box{background:var(--panel);border:1px solid var(--line);border-radius:16px 16px 0 0;width:100%;max-width:720px;max-height:88vh;overflow:auto;padding:16px}
+  .sheet h3{margin:0 0 2px;font-size:17px}
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin:12px 0}
+  .pgrid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:#0c0a11;cursor:pointer;display:block}
+  .pickrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .pick{position:relative;overflow:hidden;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:600;text-align:center;padding:12px;font-size:15px}
+  .pick input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:100px;padding:0;border:0}
+  .pick.off{background:var(--line);color:var(--muted)}
+  .viewer{position:fixed;inset:0;background:#000;display:none;flex-direction:column;z-index:30}
+  .viewer.show{display:flex}
+  .viewer img{flex:1;min-height:0;width:100%;object-fit:contain}
+  .viewer .btns{padding:12px;justify-content:space-between}
+  .modal{z-index:40}
+  .toast{z-index:50}
+  .qnext{margin-top:10px;font-size:14px;color:var(--muted)}
+  .qnext b{color:var(--accent);font-size:18px}
+  .notes{width:100%;min-height:84px;background:#0c0a11;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px;font:15px/1.4 inherit;font-family:inherit;resize:vertical;margin-top:12px}
+  .notes:focus{outline:none;border-color:var(--accent)}
+  .addr .l .n{display:block;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .addr .l{cursor:pointer}
+  .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ok);color:#062;padding:8px 14px;border-radius:999px;font-weight:600;opacity:0;transition:.2s;pointer-events:none;white-space:nowrap}
+  .toast.show{opacity:1}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:20px}
+  .modal.show{display:flex}
+  .modal .box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;max-width:340px;width:100%}
+  .modal p{margin:0 0 14px}
+</style>
+<script src="../js/firebase-config.js"></script>
+<script type="module" src="../js/fb.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <h1>DMX <span>Address</span> Calculator</h1>
+  <div class="status" id="status">Loading saved fixtures…</div>
+
+  <div class="panel">
+    <h2>Start</h2>
+    <div class="grid2">
+      <div><label>Universe</label><input id="uni" type="number" min="1" value="1" inputmode="numeric"></div>
+      <div><label>Start address (1–512)</label><input id="start" type="number" min="1" max="512" value="1" inputmode="numeric"></div>
+    </div>
+    <label class="toggle"><input id="nosplit" type="checkbox" checked> Don't split a fixture across universes (jump to next universe)</label>
+  </div>
+
+  <div class="panel">
+    <h2>My fixtures</h2>
+    <div class="chips" id="library"></div>
+    <div class="qnext" id="qnext"></div>
+    <div class="sub" style="margin-top:8px">Tap a fixture to patch it at the next free address – it goes straight into the Saved list. Make new fixtures in the Rig section and tap ★ to keep them here.</div>
+  </div>
+
+  <div class="panel">
+    <h2>Rig</h2>
+    <div class="row">
+      <div class="head">Name</div><div class="head">Ch</div><div class="head">Qty</div><div></div><div></div>
+    </div>
+    <div id="rows"></div>
+    <div class="btns">
+      <button class="primary" id="add">+ Add fixture</button>
+      <button id="clear">Clear rig</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="next">
+      <div>
+        <div class="sub">Next free start address · tap to save</div>
+        <div class="big tap" id="nextAddr" title="Tap to save">1<small>Universe 1</small></div>
+      </div>
+      <div style="text-align:right">
+        <div class="sub" id="totals">0 fixtures · 0 channels</div>
+      </div>
+    </div>
+    <div id="warns"></div>
+  </div>
+
+  <div class="panel">
+    <div class="next" style="margin-bottom:8px">
+      <h2 style="margin:0">Patch list</h2>
+      <div class="btns"><button id="pdfBtn">PDF</button><button id="copy">Copy patch</button></div>
+    </div>
+    <div class="sub" style="margin-bottom:6px" id="patchHint">Tap a fixture to move it to the saved list.</div>
+    <table>
+      <thead><tr><th>Fixture</th><th>Univ</th><th>Start</th><th>End</th><th></th></tr></thead>
+      <tbody id="patch"></tbody>
+    </table>
+  </div>
+
+  <div class="panel">
+    <div class="next" style="margin-bottom:8px">
+      <h2 style="margin:0">Saved</h2>
+      <div class="btns"><button id="copyAddr">Copy</button><button class="del" id="clearAddr">Clear</button></div>
+    </div>
+    <div id="addresses"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Saved rigs</h2>
+    <div class="saverow">
+      <input id="rigName" placeholder="Rig name, e.g. Village hall">
+      <button class="primary" id="saveRig">Save rig</button>
+    </div>
+    <div id="rigs"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Backup</h2>
+    <div class="sub" style="margin-bottom:10px">Everything (fixtures, rigs, saved list and photos) is kept on this phone. Make a backup file to move it to another phone or keep it safe.</div>
+    <div class="pickrow">
+      <button class="primary" id="backupBtn">Make backup</button>
+      <div class="pick" style="background:var(--line);color:var(--text)"><span>Restore backup</span><input id="restoreFile" type="file" accept=".json,application/json"></div>
+    </div>
+  </div>
+</div>
+
+<div class="sheet" id="sheet"><div class="box">
+  <div class="next"><div><h3 id="sheetTitle"></h3><div class="sub" id="sheetSub"></div></div><button id="sheetClose">Done</button></div>
+  <textarea class="notes" id="pnotes" placeholder="Notes – e.g. position, mode, DIP switches, cable run…"></textarea>
+  <div class="pgrid" id="pgrid"></div>
+  <div class="pickrow">
+    <div class="pick"><span>📷 Take photo</span><input id="pcam" type="file" accept="image/*" capture="environment" aria-label="Take photo"></div>
+    <div class="pick"><span>🖼 From gallery</span><input id="pfile" type="file" accept="image/*" multiple aria-label="Add photos from gallery"></div>
+  </div>
+  <div class="sub" id="pusage" style="margin-top:8px"></div>
+</div></div>
+<div class="viewer" id="viewer"><img id="vimg" alt=""><div class="btns"><button class="del" id="vdel">Delete photo</button><button id="vclose">Close</button></div></div>
+<div class="toast" id="toast"></div>
+<div class="modal" id="modal"><div class="box"><p id="modalText"></p><div class="btns"><button class="primary" id="modalYes">Yes</button><button id="modalNo">Cancel</button></div></div></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const WORK_KEY = 'cs-dmx-calc-v1';      // current rig being edited (this device)
+const SAVE_KEY = 'cs-dmx-calc-saved-v1'; // library + rigs fallback when not synced
+
+// ---------- state ----------
+let fixtures = [{name:'Fixture', ch:1, qty:1}];
+let saved = { library: [], rigs: [], addresses: [] };   // addresses: [{label,uni,addr,t}]   // library: [{name,ch}], rigs: [{name,uni,start,nosplit,fixtures,updated}]
+
+// ---------- toast / confirm ----------
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),1400); }
+function confirmBox(text){
+  return new Promise(res=>{
+    $('modalText').textContent = text; $('modal').classList.add('show');
+    const done = v => { $('modal').classList.remove('show'); $('modalYes').onclick=$('modalNo').onclick=null; res(v); };
+    $('modalYes').onclick = ()=>done(true); $('modalNo').onclick = ()=>done(false);
+  });
+}
+
+// ---------- storage: everything stays on this device ----------
+const store = {
+  mode: 'local',
+  async init(){ saved = readLocalSaved(); try{ if(navigator.storage && navigator.storage.persist) await navigator.storage.persist(); }catch(e){} },
+  save(){
+    try{ localStorage.setItem(SAVE_KEY, JSON.stringify(saved)); }
+    catch(e){ toast('Could not save – phone storage full?'); }
+    return Promise.resolve();
+  }
+};
+function readLocalSaved(){
+  try{ const s = JSON.parse(localStorage.getItem(SAVE_KEY)); if(s) return {library:s.library||[], rigs:s.rigs||[], addresses:s.addresses||[]}; }catch(e){}
+  return {library:[], rigs:[], addresses:[]};
+}
+
+// ---------- photo store (IndexedDB: no fixed limit, uses phone storage) ----------
+const photoDB = {
+  _db: null,
+  open(){
+    if(this._db) return this._db;
+    this._db = new Promise((res, rej)=>{
+      const req = indexedDB.open('cs-dmx-photos', 1);
+      req.onupgradeneeded = ()=>req.result.createObjectStore('photos');
+      req.onsuccess = ()=>res(req.result); req.onerror = ()=>rej(req.error);
+    });
+    return this._db;
+  },
+  async tx(mode, fn){
+    const db = await this.open();
+    return new Promise((res, rej)=>{
+      const t = db.transaction('photos', mode); const st = t.objectStore('photos');
+      const out = fn(st); t.oncomplete = ()=>res(out && 'result' in out ? out.result : undefined); t.onerror = ()=>rej(t.error);
+    });
+  },
+  async upload(blob){ const id = 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2,8); await this.tx('readwrite', st=>st.put(blob, id)); return {id}; },
+  get(id){ return this.tx('readonly', st=>st.get(id)); },
+  delete(id){ urlCache.delete(id); return this.tx('readwrite', st=>st.delete(id)); },
+  all(){ return this.tx('readonly', st=>st.getAllKeys()); }
+};
+const urlCache = new Map();
+async function photoURL(id){
+  if(urlCache.has(id)) return urlCache.get(id);
+  const b = await photoDB.get(id); if(!b) return '';
+  const u = URL.createObjectURL(b); urlCache.set(id, u); return u;
+}
+function hydrate(root){
+  root.querySelectorAll('img[data-pid]').forEach(async im=>{
+    try{ const u = await photoURL(im.dataset.pid); if(u) im.src = u; else im.style.opacity = .3; }catch(e){ im.style.opacity = .3; }
+  });
+}
+function mergeInto(target, src){
+  let n = 0;
+  (src.library||[]).forEach(f=>{ if(!target.library.some(x=>sameFix(x,f))){ target.library.push(f); n++; } });
+  (src.rigs||[]).forEach(r=>{ if(!target.rigs.some(x=>x.name.toLowerCase()===String(r.name).toLowerCase())){ target.rigs.push(r); n++; } });
+  (src.addresses||[]).forEach(a=>{ if(!target.addresses.some(x=>x.t===a.t && x.addr===a.addr && x.uni===a.uni)){ target.addresses.push(a); n++; } });
+  if(n) target.addresses.sort((a,b)=>a.t-b.t);
+  return n;
+}
+const sameFix = (a,b) => String(a.name).trim().toLowerCase()===String(b.name).trim().toLowerCase() && +a.ch===+b.ch;
+function setStatus(){
+  const s = $('status');
+  s.textContent='Saved on this phone · use Backup at the bottom to keep a copy'; s.className='status';
+}
+
+// ---------- working rig (this device) ----------
+function loadWork(){
+  try{
+    const s = JSON.parse(localStorage.getItem(WORK_KEY));
+    if(s){ fixtures = s.fixtures || fixtures; $('uni').value = s.uni||1; $('start').value = s.start||1; $('nosplit').checked = s.nosplit !== false; }
+  }catch(e){}
+}
+function saveWork(){
+  try{ localStorage.setItem(WORK_KEY, JSON.stringify({fixtures, uni:$('uni').value, start:$('start').value, nosplit:$('nosplit').checked})); }catch(e){}
+}
+
+// ---------- library ----------
+function renderLibrary(){
+  renderQNext();
+  const box = $('library');
+  if(!saved.library.length){ box.innerHTML = '<div class="empty">No saved fixtures yet.</div>'; return; }
+  const list = saved.library.map((f,i)=>({f,i})).sort((a,b)=>String(a.f.name).localeCompare(String(b.f.name)));
+  box.innerHTML = list.map(({f,i})=>`<div class="chip"><button class="add" data-i="${i}">${esc(f.name)}<b>${f.ch}ch</b></button><button class="ph${photosOf(f).length?' has':''}" data-p="${i}" title="Photos">📷${photosOf(f).length?' '+photosOf(f).length:''}</button><button class="x" data-x="${i}" title="Delete">✕</button></div>`).join('');
+  box.querySelectorAll('.ph').forEach(b=>b.onclick=()=>{ const f = saved.library[+b.dataset.p]; openPhotos(f, f.name, `${f.ch} channels`); });
+  box.querySelectorAll('.add').forEach(b=>b.onclick=()=>{
+    quickPatch(saved.library[+b.dataset.i]);
+  });
+  box.querySelectorAll('.x').forEach(b=>b.onclick=async()=>{
+    const f = saved.library[+b.dataset.x];
+    const n = photosOf(f).length;
+    if(!(await confirmBox(`Delete "${f.name}" (${f.ch}ch) from your fixtures?${n?` Its ${n} photo${n===1?'':'s'} will be deleted too.`:''}`))) return;
+    saved.library.splice(+b.dataset.x,1); store.save(); deletePhotoIds(photosOf(f)); renderLibrary(); renderRows();
+  });
+}
+function toggleSaveFixture(i){
+  const f = fixtures[i];
+  const ch = parseInt(f.ch,10)||0;
+  if(!String(f.name).trim() || ch<1){ toast('Give it a name and channel count'); return; }
+  const idx = saved.library.findIndex(x=>sameFix(x,{name:f.name,ch}));
+  if(idx>=0){
+    const n = photosOf(saved.library[idx]).length;
+    if(n){ toast('Has photos – delete it from My fixtures instead'); return; }
+    saved.library.splice(idx,1); toast('Removed from my fixtures');
+  }
+  else { saved.library.push({name:String(f.name).trim(), ch}); toast('Saved to my fixtures'); }
+  store.save(); renderLibrary(); renderRows();
+}
+
+// ---------- rig rows ----------
+function renderRows(){
+  const box = $('rows'); box.innerHTML = '';
+  fixtures.forEach((f,i)=>{
+    const isSaved = saved.library.some(x=>sameFix(x,{name:f.name,ch:parseInt(f.ch,10)||0}));
+    const r = document.createElement('div'); r.className='row';
+    r.innerHTML = `
+      <input value="${esc(f.name)}" placeholder="Fixture name" data-k="name">
+      <input type="number" min="1" max="512" value="${esc(f.ch)}" inputmode="numeric" data-k="ch">
+      <input type="number" min="1" value="${esc(f.qty)}" inputmode="numeric" data-k="qty">
+      <button class="icon star${isSaved?' saved':''}" title="Save to my fixtures">★</button>
+      <button class="icon del" title="Remove from rig">✕</button>`;
+    const star = r.querySelector('.star');
+    r.querySelectorAll('input').forEach(inp=>inp.addEventListener('input',()=>{
+      const k = inp.dataset.k;
+      fixtures[i][k] = k==='name' ? inp.value : parseInt(inp.value,10) || 0;
+      star.classList.toggle('saved', saved.library.some(x=>sameFix(x,{name:fixtures[i].name,ch:parseInt(fixtures[i].ch,10)||0})));
+      calc();
+    }));
+    star.onclick = ()=>toggleSaveFixture(i);
+    r.querySelector('.del').onclick = ()=>{ fixtures.splice(i,1); renderRows(); calc(); };
+    box.appendChild(r);
+  });
+}
+
+// ---------- saved rigs ----------
+function renderRigs(){
+  const box = $('rigs');
+  if(!saved.rigs.length){ box.innerHTML = '<div class="empty">No saved rigs yet.</div>'; return; }
+  const list = saved.rigs.map((r,i)=>({r,i})).sort((a,b)=>(b.r.updated||0)-(a.r.updated||0));
+  box.innerHTML = list.map(({r,i})=>{
+    const n = (r.fixtures||[]).reduce((s,f)=>s+(parseInt(f.qty,10)||0),0);
+    const c = (r.fixtures||[]).reduce((s,f)=>s+(parseInt(f.qty,10)||0)*(parseInt(f.ch,10)||0),0);
+    return `<div class="rig"><div class="meta"><div class="name">${esc(r.name)}</div><div class="sub">${n} fixtures · ${c} ch · starts U${esc(r.uni)}/${esc(r.start)}</div></div>
+      <div class="btns"><button data-load="${i}">Load</button><button class="del" data-del="${i}">✕</button></div></div>`;
+  }).join('');
+  box.querySelectorAll('[data-load]').forEach(b=>b.onclick=()=>{
+    const r = saved.rigs[+b.dataset.load];
+    fixtures = JSON.parse(JSON.stringify(r.fixtures||[]));
+    $('uni').value = r.uni||1; $('start').value = r.start||1; $('nosplit').checked = r.nosplit !== false;
+    $('rigName').value = r.name;
+    renderRows(); calc(); toast('Loaded ' + r.name);
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+  box.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{
+    const r = saved.rigs[+b.dataset.del];
+    if(!(await confirmBox(`Delete rig "${r.name}"?`))) return;
+    saved.rigs.splice(+b.dataset.del,1); store.save(); renderRigs();
+  });
+}
+$('saveRig').onclick = async ()=>{
+  const name = $('rigName').value.trim();
+  if(!name){ toast('Name the rig first'); $('rigName').focus(); return; }
+  const rig = { name, uni: parseInt($('uni').value,10)||1, start: parseInt($('start').value,10)||1, nosplit: $('nosplit').checked,
+                fixtures: fixtures.map(f=>({name:f.name, ch:parseInt(f.ch,10)||0, qty:parseInt(f.qty,10)||0})), updated: Date.now() };
+  const idx = saved.rigs.findIndex(r=>r.name.toLowerCase()===name.toLowerCase());
+  if(idx>=0){
+    if(!(await confirmBox(`Overwrite saved rig "${saved.rigs[idx].name}"?`))) return;
+    saved.rigs[idx] = rig;
+  } else saved.rigs.push(rig);
+  // also add any new fixture types to the library
+  rig.fixtures.forEach(f=>{ if(String(f.name).trim() && f.ch>0 && !saved.library.some(x=>sameFix(x,f))) saved.library.push({name:String(f.name).trim(), ch:f.ch}); });
+  store.save(); renderRigs(); renderLibrary(); renderRows(); toast('Rig saved');
+};
+
+// ---------- calculation ----------
+let patchText = '';
+let patchRows = [];
+let totals = {count:0, chans:0};
+let nextFree = {uni:1, addr:1};
+
+// ---------- photos ----------
+const assets = photoDB;
+let sheetTarget = null, sheetIndex = -1;
+function photosOf(o){ return Array.isArray(o && o.photos) ? o.photos : []; }
+function openPhotos(target, title, sub){
+  sheetTarget = target;
+  $('sheetTitle').textContent = title; $('sheetSub').textContent = sub || '';
+  $('pnotes').value = target.notes || '';
+  renderSheet(); $('sheet').classList.add('show');
+}
+function renderSheet(){
+  const ph = photosOf(sheetTarget);
+  $('pgrid').innerHTML = ph.length ? ph.map((id,i)=>`<img data-pid="${esc(id)}" data-i="${i}" alt="">`).join('') : '<div class="empty">No photos yet.</div>';
+  hydrate($('pgrid'));
+  $('pgrid').querySelectorAll('img').forEach(im=>{
+    im.onclick = ()=>{ sheetIndex = +im.dataset.i; $('vimg').src = im.src; $('viewer').classList.add('show'); };
+    im.onerror = ()=>{ im.style.opacity=.3; };
+  });
+  updateUsage();
+}
+async function updateUsage(){
+  try{
+    const n = saved.library.concat(saved.addresses).reduce((t,o)=>t+photosOf(o).length,0);
+    let txt = `${n} photo${n===1?'':'s'} saved on this phone`;
+    if(navigator.storage && navigator.storage.estimate){ const e = await navigator.storage.estimate(); txt += ` · ${(e.usage/1048576).toFixed(1)} MB used`; }
+    $('pusage').textContent = txt;
+  }catch(e){ $('pusage').textContent = ''; }
+}
+function shrinkImage(file){
+  // resize to max 1600px JPEG so far more photos fit in storage
+  return new Promise(resolve=>{
+    const url = URL.createObjectURL(file); const img = new Image();
+    img.onload = ()=>{
+      const max = 1600, sc = Math.min(1, max/Math.max(img.naturalWidth, img.naturalHeight));
+      const c = document.createElement('canvas'); c.width = Math.round(img.naturalWidth*sc); c.height = Math.round(img.naturalHeight*sc);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      c.toBlob(b=>resolve(b && b.size < file.size ? b : file), 'image/jpeg', 0.82);
+    };
+    img.onerror = ()=>{ URL.revokeObjectURL(url); resolve(file); };
+    img.src = url;
+  });
+}
+['pfile','pcam'].forEach(id=>$(id).addEventListener('change', onPhotosPicked));
+async function onPhotosPicked(e){
+  const files = [...e.target.files]; e.target.value = '';
+  if(!files.length || !sheetTarget) return;
+  const target = sheetTarget;
+  if(!Array.isArray(target.photos)) target.photos = [];
+  let ok = 0;
+  for(let i=0;i<files.length;i++){
+    toast(`Uploading ${i+1} of ${files.length}…`);
+    try{
+      const blob = await shrinkImage(files[i]);
+      const res = await assets.upload(blob);
+      target.photos.push(res.id); ok++;
+      await store.save();
+      if(sheetTarget===target) renderSheet();
+    }catch(err){
+      console.log('[dmx] upload failed', err);
+      toast(err && err.name==='QuotaExceededError' ? 'Phone storage is full' : 'Could not save photo');
+      if(err && err.name==='QuotaExceededError') break;
+      await new Promise(r=>setTimeout(r,1400));
+    }
+  }
+  if(ok) toast(`${ok} photo${ok===1?'':'s'} saved`);
+  renderLibrary(); renderAddresses();
+}
+async function deletePhotoIds(ids){
+  for(const id of ids){ try{ await assets.delete(id); }catch(e){ console.log('[dmx] delete failed', e); } }
+}
+$('vdel').onclick = async ()=>{
+  if(!(await confirmBox('Delete this photo?'))) return;
+  const id = sheetTarget.photos.splice(sheetIndex,1)[0];
+  await store.save(); deletePhotoIds([id]);
+  $('viewer').classList.remove('show'); renderSheet(); renderLibrary(); renderAddresses();
+};
+$('vclose').onclick = ()=>$('viewer').classList.remove('show');
+$('sheetClose').onclick = ()=>{ $('sheet').classList.remove('show'); sheetTarget = null; };
+
+// ---------- notes ----------
+let notesTimer = null;
+$('pnotes').addEventListener('input', ()=>{
+  if(!sheetTarget) return;
+  sheetTarget.notes = $('pnotes').value;
+  clearTimeout(notesTimer); notesTimer = setTimeout(()=>{ store.save(); renderAddresses(); }, 400);
+});
+
+// ---------- quick patch: tap a saved fixture, it lands on the next free address ----------
+function nextPatchAddress(){
+  // continue after the highest address already in the Saved list; if empty, use the Start fields
+  let best = null;
+  saved.addresses.forEach(a=>{
+    if(!a.end || a.label==='Next free') return;
+    const [eu, ea] = String(a.end).includes('.') ? String(a.end).split('.').map(Number) : [a.uni, Number(a.end)];
+    const abs = eu*512 + ea;
+    if(best===null || abs > best) best = abs;
+  });
+  if(best===null) return {uni: Math.max(1, parseInt($('uni').value,10)||1), addr: Math.min(512, Math.max(1, parseInt($('start').value,10)||1))};
+  let uni = Math.floor((best)/512), addr = best%512 + 1;
+  if(best%512===0){ uni -= 1; addr = 513; }
+  if(addr > 512){ uni++; addr = 1; }
+  return {uni, addr};
+}
+function placeFixture(start, ch){
+  let {uni, addr} = start;
+  if(addr + ch - 1 > 512 && $('nosplit').checked){ uni++; addr = 1; }
+  let endAddr = addr + ch - 1, endUni = uni;
+  if(endAddr > 512){ endAddr -= 512; endUni = uni + 1; }
+  return {uni, addr, end: (endUni!==uni ? endUni+'.' : '') + endAddr};
+}
+function quickPatch(f){
+  const ch = parseInt(f.ch,10)||0; if(ch<1 || ch>512){ toast('Check the channel count'); return; }
+  const p = placeFixture(nextPatchAddress(), ch);
+  const nums = saved.addresses.filter(a=>a.fix===f.name).map(a=>parseInt(String(a.label).slice(String(f.name).length),10)||0);
+  const n = (nums.length ? Math.max(...nums) : 0) + 1;
+  const label = `${f.name} ${n}`;
+  saved.addresses.push({label, fix:f.name, ch, uni:p.uni, addr:p.addr, end:p.end, t:Date.now()});
+  store.save(); renderAddresses();
+  toast(`${label} → U${p.uni} / ${p.addr}`);
+}
+function renderQNext(){
+  const q = nextPatchAddress();
+  $('qnext').innerHTML = saved.library.length ? `Next fixture starts at <b>U${q.uni} / ${q.addr}</b>` : '';
+}
+
+// ---------- saved addresses ----------
+function saveAddress(label, uni, addr, key, end){
+  const entry = {label, uni, addr, t: Date.now()};
+  if(key){ entry.key = key; entry.end = end; }
+  saved.addresses.push(entry);
+  if(saved.addresses.length > 500) saved.addresses.splice(0, saved.addresses.length - 500);
+  store.save(); renderAddresses(); calc(); toast(key ? `${label} moved to saved` : `Saved U${uni} / ${addr}`);
+}
+function fmtTime(t){
+  const d = new Date(t), now = new Date();
+  const hm = d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  return d.toDateString()===now.toDateString() ? hm : d.toLocaleDateString([], {day:'numeric', month:'short'}) + ' ' + hm;
+}
+function renderAddresses(){
+  renderQNext();
+  const box = $('addresses');
+  if(!saved.addresses.length){ box.innerHTML = '<div class="empty">Nothing saved yet – tap a fixture in the patch list.</div>'; return; }
+  const list = saved.addresses.map((a,i)=>({a,i})).reverse();
+  box.innerHTML = list.map(({a,i})=>`<div class="addr">${photosOf(a).length?`<img class="thumb" data-pid="${esc(a.photos[0])}" data-p="${i}" alt="">`:''}<div class="a">U${esc(a.uni)} / ${esc(a.addr)}${a.end?`<div class="t">to ${esc(a.end)}</div>`:''}</div><div class="l" data-p="${i}">${esc(a.label)}${a.notes?`<span class="n">📝 ${esc(a.notes)}</span>`:''}</div><div class="t">${fmtTime(a.t)}</div><button class="pbtn${photosOf(a).length?' has':''}" data-p="${i}">📷${photosOf(a).length?' '+photosOf(a).length:''}</button><button class="del" data-i="${i}">✕</button></div>`).join('');
+  hydrate(box);
+  box.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{ const a = saved.addresses[+b.dataset.p]; openPhotos(a, a.label, `Universe ${a.uni} · ${a.addr}${a.end?' to '+a.end:''}${a.ch?' · '+a.ch+'ch':''}`); });
+  box.querySelectorAll('button.del').forEach(b=>b.onclick=async()=>{
+    const a = saved.addresses[+b.dataset.i]; const n = photosOf(a).length;
+    if(n && !(await confirmBox(`Remove ${a.label} from the saved list? Its ${n} photo${n===1?'':'s'} will be deleted.`))) return;
+    saved.addresses.splice(+b.dataset.i,1); store.save(); deletePhotoIds(photosOf(a)); renderAddresses(); calc(); if(a.key) toast(a.label + ' back in patch list');
+  });
+}
+$('patch').addEventListener('click', e=>{
+  const tr = e.target.closest('tr[data-k]'); if(!tr) return;
+  saveAddress(tr.dataset.l, +tr.dataset.u, +tr.dataset.a, tr.dataset.k, tr.dataset.e);
+});
+$('nextAddr').onclick = ()=>saveAddress('Next free', nextFree.uni, nextFree.addr);
+$('copyAddr').onclick = async ()=>{
+  if(!saved.addresses.length){ toast('Nothing to copy'); return; }
+  const txt = saved.addresses.map(a=>`U${a.uni} / ${a.addr}\t${a.label}\t${fmtTime(a.t)}`).join('\n');
+  try{ await navigator.clipboard.writeText(txt); toast('Copied'); }catch(e){ toast('Copy blocked'); }
+};
+$('clearAddr').onclick = async ()=>{
+  if(!saved.addresses.length) return;
+  const ids = saved.addresses.flatMap(photosOf);
+  if(!(await confirmBox(`Clear the saved list? Moved fixtures go back to the patch list.${ids.length?` ${ids.length} photo${ids.length===1?'':'s'} will be deleted.`:''}`))) return;
+  saved.addresses = []; store.save(); deletePhotoIds(ids); renderAddresses(); calc();
+};
+function calc(){
+  let uni = Math.max(1, parseInt($('uni').value,10) || 1);
+  let addr = parseInt($('start').value,10) || 1;
+  addr = Math.min(512, Math.max(1, addr));
+  const nosplit = $('nosplit').checked;
+  const tbody = $('patch'); tbody.innerHTML = '';
+  const warns = [];
+  let count = 0, chans = 0, jumps = 0, moved = 0;
+  const doneKeys = new Set(saved.addresses.filter(a=>a.key).map(a=>a.key));
+  const lines = ['Fixture\tUniverse\tStart\tEnd'];
+  patchRows = [];
+
+  fixtures.forEach(f=>{
+    const ch = parseInt(f.ch,10) || 0, qty = parseInt(f.qty,10) || 0;
+    if(ch < 1 || qty < 1) return;
+    if(ch > 512){ warns.push(`${esc(f.name||'Fixture')}: ${ch} channels is more than one universe (512).`); return; }
+    for(let n=1;n<=qty;n++){
+      let jumped = false;
+      if(addr + ch - 1 > 512 && nosplit){ uni++; addr = 1; jumped = true; jumps++; }
+      let endAddr = addr + ch - 1, endUni = uni;
+      if(endAddr > 512){ endAddr -= 512; endUni = uni + 1; }
+      const label = `${f.name||'Fixture'} ${qty>1?n:''}`.trim();
+      const endTxt = (endUni!==uni ? endUni+'.' : '') + endAddr;
+      const key = `${label}|${uni}|${addr}`;
+      if(doneKeys.has(key)){ moved++; }
+      else {
+        const tr = document.createElement('tr');
+        if(jumped) tr.className = 'jump';
+        tr.dataset.k = key; tr.dataset.l = label; tr.dataset.u = uni; tr.dataset.a = addr; tr.dataset.e = endTxt;
+        tr.innerHTML = `<td>${esc(label)}${jumped?' ↵':''}</td><td class="num">${uni}</td><td class="num">${addr}</td><td class="num">${endTxt}</td><td class="go">→</td>`;
+        tbody.appendChild(tr);
+      }
+      lines.push(`${label}\t${uni}\t${addr}\t${endTxt}`);
+      patchRows.push({label, uni, addr, end:endTxt, done:doneKeys.has(key), jumped});
+      if(endUni!==uni) warns.push(`${esc(label)} splits across universe ${uni} and ${endUni}.`);
+      count++; chans += ch;
+      addr += ch;
+      if(addr > 512){ addr -= 512; uni++; }
+    }
+  });
+
+  $('nextAddr').innerHTML = `${addr}<small>Universe ${uni}</small>`;
+  $('totals').textContent = `${count} fixture${count===1?'':'s'} · ${chans} channels`;
+  if(jumps) warns.unshift('Rows marked ↵ jumped to the next universe so they don\'t split.');
+  $('warns').innerHTML = warns.map(w=>`<div class="warn">${w}</div>`).join('');
+  nextFree = {uni, addr};
+  totals = {count, chans};
+  $('patchHint').textContent = moved ? `Tap a fixture to move it to the saved list · ${moved} moved` : 'Tap a fixture to move it to the saved list.';
+  if(count && moved===count) tbody.innerHTML = '<tr><td colspan="5" class="empty">All fixtures moved to the saved list.</td></tr>';
+  patchText = lines.join('\n') + `\n\nNext free: U${uni} / ${addr}`;
+  saveWork();
+}
+
+$('add').onclick = ()=>{ fixtures.push({name:'Fixture', ch:1, qty:1}); renderRows(); calc(); };
+$('clear').onclick = ()=>{ fixtures=[{name:'Fixture', ch:1, qty:1}]; $('uni').value=1; $('start').value=1; $('rigName').value=''; renderRows(); calc(); };
+['uni','start','nosplit'].forEach(id=>$(id).addEventListener('input',()=>{ calc(); renderQNext(); }));
+$('copy').onclick = async ()=>{
+  try{ await navigator.clipboard.writeText(patchText); toast('Copied'); }
+  catch(e){ toast('Copy blocked'); }
+};
+
+// ---------- boot ----------
+loadWork(); saved = readLocalSaved(); renderLibrary(); renderRows(); renderRigs(); renderAddresses(); calc();
+// ---------- backup / restore ----------
+const isNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+function blobToDataURL(b){ return new Promise((res,rej)=>{ const fr = new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=()=>rej(fr.error); fr.readAsDataURL(b); }); }
+async function dataURLToBlob(u){ return (await fetch(u)).blob(); }
+$('backupBtn').onclick = async ()=>{
+  try{
+    toast('Making backup…');
+    const ids = [...new Set(saved.library.concat(saved.addresses).flatMap(photosOf))];
+    const photos = {};
+    for(const id of ids){ const b = await photoDB.get(id); if(b) photos[id] = await blobToDataURL(b); }
+    const json = JSON.stringify({app:'cs-dmx-calc', version:1, made:new Date().toISOString(), saved, photos});
+    const name = 'dmx-backup-' + new Date().toISOString().slice(0,10) + '.json';
+    if(isNative){
+      const {Filesystem, Share} = window.Capacitor.Plugins;
+      const res = await Filesystem.writeFile({path:name, data:btoa(unescape(encodeURIComponent(json))), directory:'CACHE'});
+      await Share.share({title:'DMX backup', url:res.uri, dialogTitle:'Save backup to…'});
+      return;
+    }
+    const file = new File([json], name, {type:'application/json'});
+    if(navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file], title:'DMX backup'}); return; }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+    toast('Backup downloaded');
+  }catch(e){ if(e && e.name==='AbortError') return; console.log(e); toast('Backup failed'); }
+};
+$('restoreFile').addEventListener('change', async e=>{
+  const f = e.target.files[0]; e.target.value=''; if(!f) return;
+  try{
+    const data = JSON.parse(await f.text());
+    if(data.app!=='cs-dmx-calc' || !data.saved) throw new Error('not a backup');
+    if(!(await confirmBox('Add everything from this backup to the app? Nothing already here is deleted.'))) return;
+    toast('Restoring…');
+    for(const [id,u] of Object.entries(data.photos||{})){
+      if(await photoDB.get(id)) continue;
+      const blob = await dataURLToBlob(u);
+      await photoDB.tx('readwrite', st=>st.put(blob, id));
+    }
+    const inc = data.saved;
+    (inc.library||[]).forEach(f=>{ const ex = saved.library.find(x=>sameFix(x,f)); if(ex){ ex.photos = [...new Set(photosOf(ex).concat(photosOf(f)))]; } else saved.library.push(f); });
+    mergeInto(saved, {rigs:inc.rigs||[], addresses:inc.addresses||[]});
+    await store.save(); renderLibrary(); renderRows(); renderRigs(); renderAddresses(); calc();
+    toast('Backup restored');
+  }catch(err){ console.log(err); toast('That file isn\'t a DMX backup'); }
+});
+
+// ---------- PDF export (patch list, saved list, fixtures + photos) ----------
+function loadJsPDF(){
+  if(window.jspdf) return Promise.resolve(window.jspdf);
+  return new Promise((res, rej)=>{ const sc = document.createElement('script'); sc.src = 'lib/jspdf.umd.min.js'; sc.onload = ()=>res(window.jspdf); sc.onerror = rej; document.head.appendChild(sc); });
+}
+function pdfImage(id){
+  // returns {data, w, h} as a ~1000px JPEG so the PDF stays a sensible size
+  return new Promise(async res=>{
+    try{
+      const u = await photoURL(id); if(!u) return res(null);
+      const img = new Image();
+      img.onload = ()=>{
+        const sc = Math.min(1, 1000/Math.max(img.naturalWidth, img.naturalHeight));
+        const c = document.createElement('canvas'); c.width = Math.round(img.naturalWidth*sc); c.height = Math.round(img.naturalHeight*sc);
+        const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0,0,c.width,c.height); g.drawImage(img,0,0,c.width,c.height);
+        res({data:c.toDataURL('image/jpeg',0.8), w:c.width, h:c.height});
+      };
+      img.onerror = ()=>res(null); img.src = u;
+    }catch(e){ res(null); }
+  });
+}
+async function buildPDF(){
+  const {jsPDF} = await loadJsPDF();
+  const doc = new jsPDF({unit:'mm', format:'a4'});
+  const W = 210, H = 297, M = 14, CW = W - 2*M;
+  const purple = [124,58,237], grey = [110,104,125], line = [225,220,235];
+  let y = M;
+  const rigName = $('rigName').value.trim();
+  const ensure = h => { if(y + h > H - M){ doc.addPage(); y = M; } };
+  const heading = t => { ensure(14); y += 4; doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(...purple); doc.text(t, M, y); y += 2; doc.setDrawColor(...purple); doc.setLineWidth(0.4); doc.line(M, y, W-M, y); y += 6; doc.setTextColor(20); };
+  // title
+  doc.setFillColor(...purple); doc.rect(0,0,W,26,'F');
+  doc.setTextColor(255); doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.text('DMX Patch' + (rigName ? ' – ' + rigName : ''), M, 12);
+  doc.setFont('helvetica','normal'); doc.setFontSize(10);
+  doc.text(`${new Date().toLocaleString([], {dateStyle:'medium', timeStyle:'short'})}  ·  Corrupt Scripts DMX Calc`, M, 19);
+  y = 34; doc.setTextColor(20); doc.setFontSize(11);
+  doc.text(`Start: Universe ${parseInt($('uni').value,10)||1} / ${parseInt($('start').value,10)||1}     Fixtures: ${totals.count}     Channels: ${totals.chans}     Next free: U${nextFree.uni} / ${nextFree.addr}`, M, y); y += 4;
+
+  // patch table
+  if(patchRows.length){
+    heading('Patch list');
+    const cols = [M, M+80, M+108, M+136, M+164];
+    const head = ()=>{ doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(...grey); ['FIXTURE','UNIVERSE','START','END','SAVED'].forEach((t,i)=>doc.text(t, cols[i], y)); y += 2; doc.setDrawColor(...line); doc.line(M,y,W-M,y); y += 5; doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(20); };
+    head();
+    patchRows.forEach(r=>{
+      if(y + 7 > H - M){ doc.addPage(); y = M; head(); }
+      doc.text(doc.splitTextToSize(r.label, 76)[0], cols[0], y); doc.text(String(r.uni), cols[1], y); doc.text(String(r.addr), cols[2], y); doc.text(String(r.end), cols[3], y);
+      if(r.done){ doc.setTextColor(...purple); doc.text('Yes', cols[4], y); doc.setTextColor(20); }
+      y += 2; doc.setDrawColor(...line); doc.line(M,y,W-M,y); y += 5;
+    });
+  }
+
+  // entries with photos
+  const photoBlock = async (title, sub, ids, notes)=>{
+    ensure(14 + (ids.length?40:0));
+    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(20); doc.text(title, M, y);
+    if(sub){ doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(...grey); doc.text(sub, W-M, y, {align:'right'}); doc.setTextColor(20); }
+    y += 4;
+    if(notes && notes.trim()){
+      doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(60);
+      doc.splitTextToSize(notes.trim(), CW).forEach(ln=>{ ensure(5); doc.text(ln, M, y+1); y += 4.6; });
+      doc.setTextColor(20); y += 2;
+    }
+    const per = 3, gap = 4, cell = (CW - gap*(per-1))/per;
+    let col = 0, rowH = 0;
+    for(const id of ids){
+      const im = await pdfImage(id); if(!im) continue;
+      let w = cell, h = cell * im.h / im.w; if(h > 70){ h = 70; w = h * im.w / im.h; }
+      if(col===0) ensure(h + 2);
+      doc.addImage(im.data, 'JPEG', M + col*(cell+gap) + (cell-w)/2, y, w, h);
+      rowH = Math.max(rowH, h); col++;
+      if(col===per){ y += rowH + gap; col = 0; rowH = 0; }
+    }
+    if(col) y += rowH + gap;
+    y += 3; doc.setDrawColor(...line); doc.line(M, y-2, W-M, y-2); y += 3;
+  };
+  if(saved.addresses.length){
+    heading('Saved list');
+    const ordered = saved.addresses.slice().sort((a,b)=>(a.uni*1000+a.addr)-(b.uni*1000+b.addr));
+    for(const a of ordered){ await photoBlock(a.label, `U${a.uni} / ${a.addr}${a.end ? ' – ' + a.end : ''}${a.ch ? '  ·  ' + a.ch + 'ch' : ''}`, photosOf(a), a.notes); }
+  }
+  const libWithPhotos = saved.library.filter(f=>photosOf(f).length || (f.notes && f.notes.trim()));
+  if(libWithPhotos.length){
+    heading('My fixtures');
+    for(const f of libWithPhotos){ await photoBlock(f.name, `${f.ch} channels`, photosOf(f), f.notes); }
+  }
+  // page numbers
+  const n = doc.getNumberOfPages();
+  for(let i=1;i<=n;i++){ doc.setPage(i); doc.setFontSize(8); doc.setTextColor(...grey); doc.text(`Page ${i} of ${n}`, W-M, H-6, {align:'right'}); }
+  return doc;
+}
+async function saveFile(blob, name, mime){
+  if(isNative){
+    const {Filesystem, Share} = window.Capacitor.Plugins;
+    const b64 = (await blobToDataURL(blob)).split(',')[1];
+    const res = await Filesystem.writeFile({path:name, data:b64, directory:'CACHE'});
+    await Share.share({title:name, url:res.uri, dialogTitle:'Save or send…'});
+    return;
+  }
+  const file = new File([blob], name, {type:mime});
+  if(navigator.canShare && navigator.canShare({files:[file]}) && /Android|iPhone|iPad/i.test(navigator.userAgent)){ await navigator.share({files:[file], title:name}); return; }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+  toast('PDF downloaded');
+}
+$('pdfBtn').onclick = async ()=>{
+  try{
+    toast('Making PDF…');
+    const doc = await buildPDF();
+    const rig = $('rigName').value.trim().replace(/[^\w\- ]+/g,'').replace(/\s+/g,'-');
+    await saveFile(doc.output('blob'), `DMX-patch${rig?'-'+rig:''}-${new Date().toISOString().slice(0,10)}.pdf`, 'application/pdf');
+  }catch(e){ if(e && e.name==='AbortError') return; console.log(e); toast('PDF failed'); }
+};
+
+// ---------- Android back button (app only) ----------
+if(isNative && window.Capacitor.Plugins.App){
+  window.Capacitor.Plugins.App.addListener('backButton', ()=>{
+    if($('modal').classList.contains('show')) $('modalNo').click();
+    else if($('viewer').classList.contains('show')) $('viewer').classList.remove('show');
+    else if($('sheet').classList.contains('show')) $('sheetClose').click();
+    else window.Capacitor.Plugins.App.exitApp();
+  });
+}
+// ---------- offline support when hosted on the web ----------
+if(!isNative && 'serviceWorker' in navigator && location.protocol==='https:'){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+
+store.init().then(()=>{ setStatus(); renderLibrary(); renderRows(); renderRigs(); renderAddresses(); });
+</script>
+<script src="share.js"></script>
+</body>
+</html>

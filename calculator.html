@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DMX address calculator | B-Box</title>
+  <meta name="description" content="Free DMX address calculator: patch fixtures across universes, save rigs with photos and notes, and export a PDF.">
+  <meta name="theme-color" content="#0b0c0e">
+  <link rel="icon" href="assets/favicon.png" type="image/png" sizes="64x64">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header" id="top">
+    <div class="wrap header-in">
+      <a class="logo" href="index.html" aria-label="B-Box lighting control, home"><img src="assets/logo.png" alt="B-Box lighting control" width="129" height="46"></a>
+
+      <nav class="nav" id="nav" aria-label="Main">
+        <a href="index.html">Welcome</a>
+        <a href="products.html" aria-current="page">Products</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="account.html">Account</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="cart-btn" id="cartOpen" aria-label="Open basket">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 4h2l2.2 11h10.6L20 7H6.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="19.5" r="1.4" fill="currentColor"/><circle cx="17" cy="19.5" r="1.4" fill="currentColor"/></svg>
+          <span class="cart-count" id="cartCount" hidden>0</span>
+        </button>
+        <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="nav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section first" aria-labelledby="calcPageTitle">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Free tool</span>
+            <h2 id="calcPageTitle">DMX address calculator</h2>
+            <p class="sub">Add your fixtures, tap to patch them, and keep your rigs. Your data stays on this device.</p>
+          </div>
+          <div class="cta-row">
+            <a class="btn ghost" href="products.html">&larr; Products</a>
+            <a class="btn ghost" id="calcFull" href="calculator/index.html">Full screen</a>
+          </div>
+        </div>
+        <div class="share-bar" id="shareBar" hidden>
+          <div class="share-line">
+            <div class="share-status" id="shareStatus"></div>
+            <div class="share-actions" id="shareActions"></div>
+          </div>
+          <div class="share-panel" id="sharePanel" hidden></div>
+        </div>
+        <div class="calc-frame">
+          <iframe id="calcFrame" title="DMX address calculator"></iframe>
+          <noscript><p style="padding:24px"><a href="calculator/index.html">Open the DMX calculator</a> (it needs JavaScript to show here).</p></noscript>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="wrap foot">
+      <div>
+        <a class="logo" href="index.html" aria-label="B-Box lighting control, home"><img src="assets/logo.png" alt="B-Box lighting control" width="129" height="46"></a>
+        <p class="muted">Wired and wireless DMX and CRMX light controllers for film and TV.</p>
+      </div>
+      <nav class="foot-nav" aria-label="Footer">
+        <a href="products.html">Products</a>
+        <a href="#calculator">DMX calculator</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="account.html">Account</a>
+      </nav>
+    </div>
+    <div class="wrap foot-base">
+      <span>&copy; <span id="year">2026</span> B-Box. All rights reserved.</span>
+      <span>CRMX is a trademark of LumenRadio AB. All prices include VAT.</span>
+    </div>
+  </footer>
+
+  <!-- ============ BASKET DRAWER ============ -->
+  <div class="backdrop" id="backdrop" hidden></div>
+  <aside class="drawer" id="cart" aria-hidden="true" aria-label="Basket" tabindex="-1">
+    <div class="drawer-head">
+      <h2>Your basket</h2>
+      <button class="icon-btn" id="cartClose" aria-label="Close basket">&times;</button>
+    </div>
+    <ul class="cart-list" id="cartList"></ul>
+    <div class="cart-empty" id="cartEmpty">
+      <p>Your basket is empty.</p>
+      <a class="btn ghost sm" href="products.html" id="cartShop">Browse products</a>
+    </div>
+    <div class="cart-foot" id="cartFoot">
+      <dl class="totals">
+        <div><dt>VAT included (20%)</dt><dd id="tVat">£0.00</dd></div>
+        <div class="grand"><dt>Total (inc VAT)</dt><dd id="tTot">£0.00</dd></div>
+      </dl>
+      <p class="ship-note" id="shipNote" hidden>UK delivery for hardware is calculated at checkout.</p>
+      <button class="btn primary block" id="checkout" type="button">Checkout</button>
+      <p class="demo-note">Demo checkout &mdash; no payment is taken until a payment provider is connected.</p>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/firebase-config.js"></script>
+  <script type="module" src="js/fb.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/calculator-share.js"></script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>B-Box | Wired &amp; wireless DMX and CRMX controllers for film lighting</title>
+  <meta name="description" content="B-Box is a UK company making wired and wireless DMX and CRMX light controllers, a lighting desk app and a free DMX calculator for film and TV lighting crews.">
+  <meta name="theme-color" content="#0b0c0e">
+  <link rel="icon" href="assets/favicon.png" type="image/png" sizes="64x64">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header" id="top">
+    <div class="wrap header-in">
+      <a class="logo" href="index.html" aria-label="B-Box lighting control, home"><img src="assets/logo.png" alt="B-Box lighting control" width="129" height="46"></a>
+
+      <nav class="nav" id="nav" aria-label="Main">
+        <a href="index.html" aria-current="page">Welcome</a>
+        <a href="products.html">Products</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="account.html">Account</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="cart-btn" id="cartOpen" aria-label="Open basket">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 4h2l2.2 11h10.6L20 7H6.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="19.5" r="1.4" fill="currentColor"/><circle cx="17" cy="19.5" r="1.4" fill="currentColor"/></svg>
+          <span class="cart-count" id="cartCount" hidden>0</span>
+        </button>
+        <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="nav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+<section class="hero" id="welcome" aria-labelledby="heroTitle">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="wrap hero-in">
+        <div class="hero-copy">
+          <span class="eyebrow">Film lighting control &middot; United Kingdom</span>
+          <h1 id="heroTitle">Every light on set, <em>under your fingers.</em></h1>
+          <p class="lead">B-Box makes wired and wireless DMX and CRMX light controllers for film and TV lighting crews &mdash; plus a lighting desk app and the DMX tools that go with them.</p>
+          <div class="cta-row">
+            <a class="btn primary" href="products.html">Shop controllers</a>
+            <a class="btn ghost" href="calculator.html">Free DMX calculator</a>
+          </div>
+          <ul class="chips" aria-label="What we make">
+            <li>Wired DMX512</li>
+            <li>Wireless DMX</li>
+            <li>CRMX</li>
+            <li>Lighting desk app</li>
+            <li>Android app</li>
+          </ul>
+        </div>
+
+        <div class="rig" aria-label="Interactive demo: drag the faders to dim the lights">
+          <div class="rig-top">
+            <span class="rig-title"><i class="dot"></i> Universe 1 &middot; CH 1&ndash;8</span>
+            <span class="rig-hint" id="rigHint">Drag the faders</span>
+          </div>
+          <div class="lamps" id="lamps" aria-hidden="true"></div>
+          <div class="faders" id="faders"></div>
+          <div class="rig-actions">
+            <button class="btn ghost sm" id="rigBlackout" type="button">Blackout</button>
+            <button class="btn ghost sm" id="rigFull" type="button">Full</button>
+            <button class="btn ghost sm" id="rigChase" type="button" aria-pressed="true">Chase</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="wrap">
+        <div class="feature-strip">
+          <div><strong>Wired or wireless</strong><span>One controller does DMX512 over cable and wireless DMX. Step up to CRMX for CRMX-ready lights.</span></div>
+          <div><strong>Desk &amp; Android apps</strong><span>Run your rig from a computer, or from an Android phone or tablet over Bluetooth or Wi-Fi.</span></div>
+          <div><strong>Free DMX calculator</strong><span>Patch addresses and universes in seconds, right in your browser.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section showcase" aria-labelledby="showcaseTitle">
+      <div class="wrap showcase-in">
+        <div class="showcase-copy">
+          <span class="eyebrow">B-Box DMX &amp; CRMX</span>
+          <h2 id="showcaseTitle">Wired and CRMX, on one screen.</h2>
+          <p class="sub">Every universe at a glance, with a master you can turn by hand.</p>
+          <ul class="specs">
+            <li>Wired and CRMX universes side by side</li>
+            <li>CRMX signal strength and receiver status</li>
+            <li>Art-Net input, cues and a hands-on master</li>
+            <li>Battery level and network address always visible</li>
+          </ul>
+          <a class="btn primary" href="products.html">See the controllers</a>
+        </div>
+        <img class="showcase-img" src="assets/b-box-screen.png" alt="B-Box controller screen showing a wired DMX universe and a CRMX universe side by side" loading="lazy">
+      </div>
+    </section>
+
+    <section class="section band" aria-labelledby="bandTitle">
+      <div class="wrap band-in">
+        <div>
+          <h2 id="bandTitle">Ready to rig?</h2>
+          <p class="sub">Browse the controllers, try the DMX calculator, or ask us which setup suits your next shoot.</p>
+        </div>
+        <div class="cta-row">
+          <a class="btn primary" href="products.html">Shop controllers</a>
+          <a class="btn ghost" href="contact.html">Talk to us</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="wrap foot">
+      <div>
+        <a class="logo" href="index.html" aria-label="B-Box lighting control, home"><img src="assets/logo.png" alt="B-Box lighting control" width="129" height="46"></a>
+        <p class="muted">Wired and wireless DMX and CRMX light controllers for film and TV.</p>
+      </div>
+      <nav class="foot-nav" aria-label="Footer">
+        <a href="products.html">Products</a>
+        <a href="calculator.html">DMX calculator</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="account.html">Account</a>
+      </nav>
+    </div>
+    <div class="wrap foot-base">
+      <span>&copy; <span id="year">2026</span> B-Box. All rights reserved.</span>
+      <span>CRMX is a trademark of LumenRadio AB. All prices include VAT.</span>
+    </div>
+  </footer>
+
+  <!-- ============ BASKET DRAWER ============ -->
+  <div class="backdrop" id="backdrop" hidden></div>
+  <aside class="drawer" id="cart" aria-hidden="true" aria-label="Basket" tabindex="-1">
+    <div class="drawer-head">
+      <h2>Your basket</h2>
+      <button class="icon-btn" id="cartClose" aria-label="Close basket">&times;</button>
+    </div>
+    <ul class="cart-list" id="cartList"></ul>
+    <div class="cart-empty" id="cartEmpty">
+      <p>Your basket is empty.</p>
+      <a class="btn ghost sm" href="products.html" id="cartShop">Browse products</a>
+    </div>
+    <div class="cart-foot" id="cartFoot">
+      <dl class="totals">
+        <div><dt>VAT included (20%)</dt><dd id="tVat">£0.00</dd></div>
+        <div class="grand"><dt>Total (inc VAT)</dt><dd id="tTot">£0.00</dd></div>
+      </dl>
+      <p class="ship-note" id="shipNote" hidden>UK delivery for hardware is calculated at checkout.</p>
+      <button class="btn primary block" id="checkout" type="button">Checkout</button>
+      <p class="demo-note">Demo checkout &mdash; no payment is taken until a payment provider is connected.</p>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/firebase-config.js"></script>
+  <script type="module" src="js/fb.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

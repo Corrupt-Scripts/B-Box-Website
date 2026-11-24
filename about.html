@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About us | B-Box</title>
+  <meta name="description" content="B-Box is a UK team designing and selling DMX and CRMX light controllers and lighting software for film and television.">
+  <meta name="theme-color" content="#0b0c0e">
+  <link rel="icon" href="assets/favicon.png" type="image/png" sizes="64x64">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header" id="top">
+    <div class="wrap header-in">
+      <a class="logo" href="index.html" aria-label="B-Box lighting control, home"><img src="assets/logo.png" alt="B-Box lighting control" width="129" height="46"></a>
+
+      <nav class="nav" id="nav" aria-label="Main">
+        <a href="index.html">Welcome</a>
+        <a href="products.html">Products</a>
+        <a href="about.html" aria-current="page">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="account.html">Account</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="cart-btn" id="cartOpen" aria-label="Open basket">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 4h2l2.2 11h10.6L20 7H6.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="19.5" r="1.4" fill="currentColor"/><circle cx="17" cy="19.5" r="1.4" fill="currentColor"/></svg>
+          <span class="cart-count" id="cartCount" hidden>0</span>
+        </button>
+        <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="nav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+<section class="section first" id="about" aria-labelledby="aboutTitle">
+      <div class="wrap about">
+        <div class="about-copy">
+          <span class="eyebrow">About us</span>
+          <h2 id="aboutTitle">A UK team building for the people on set.</h2>
+          <p>B-Box designs, makes and sells light controllers for film and television. Our wired and wireless DMX and CRMX units, lighting desk app and free tools like the DMX calculator exist for one reason: so gaffers, electricians and lighting designers spend less time fighting their kit and more time shaping light.</p>
+          <a class="btn ghost" href="contact.html">Talk to the team</a>
+        </div>
+        <ul class="values">
+          <li>
+            <h3>Built for set days</h3>
+            <p>Quick to rig, easy to read in the dark, dependable from first call to wrap.</p>
+          </li>
+          <li>
+            <h3>Wired, wireless, CRMX</h3>
+            <p>One family of controllers, so you can mix cable and wireless on the same job.</p>
+          </li>
+          <li>
+            <h3>Support you can reach</h3>
+            <p>Questions go to the people who build the kit, not a call centre.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="wrap foot">
+      <div>
+        <a class="logo" href="index.html" aria-label="B-Box lighting control, home"><img src="assets/logo.png" alt="B-Box lighting control" width="129" height="46"></a>
+        <p class="muted">Wired and wireless DMX and CRMX light controllers for film and TV.</p>
+      </div>
+      <nav class="foot-nav" aria-label="Footer">
+        <a href="products.html">Products</a>
+        <a href="calculator.html">DMX calculator</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="account.html">Account</a>
+      </nav>
+    </div>
+    <div class="wrap foot-base">
+      <span>&copy; <span id="year">2026</span> B-Box. All rights reserved.</span>
+      <span>CRMX is a trademark of LumenRadio AB. All prices include VAT.</span>
+    </div>
+  </footer>
+
+  <!-- ============ BASKET DRAWER ============ -->
+  <div class="backdrop" id="backdrop" hidden></div>
+  <aside class="drawer" id="cart" aria-hidden="true" aria-label="Basket" tabindex="-1">
+    <div class="drawer-head">
+      <h2>Your basket</h2>
+      <button class="icon-btn" id="cartClose" aria-label="Close basket">&times;</button>
+    </div>
+    <ul class="cart-list" id="cartList"></ul>
+    <div class="cart-empty" id="cartEmpty">
+      <p>Your basket is empty.</p>
+      <a class="btn ghost sm" href="products.html" id="cartShop">Browse products</a>
+    </div>
+    <div class="cart-foot" id="cartFoot">
+      <dl class="totals">
+        <div><dt>VAT included (20%)</dt><dd id="tVat">£0.00</dd></div>
+        <div class="grand"><dt>Total (inc VAT)</dt><dd id="tTot">£0.00</dd></div>
+      </dl>
+      <p class="ship-note" id="shipNote" hidden>UK delivery for hardware is calculated at checkout.</p>
+      <button class="btn primary block" id="checkout" type="button">Checkout</button>
+      <p class="demo-note">Demo checkout &mdash; no payment is taken until a payment provider is connected.</p>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/firebase-config.js"></script>
+  <script type="module" src="js/fb.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

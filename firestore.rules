@@ -1,0 +1,56 @@
+rules_version = '2';
+
+// Paste this into Firebase console > Firestore Database > Rules, then Publish.
+// Shared calculators: only members can read/write a workspace. You become a member by
+// owning it, or by presenting an invite code that the owner created.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+    function isMember(ws) {
+      return signedIn() &&
+        exists(/databases/$(database)/documents/workspaces/$(ws)/members/$(request.auth.uid));
+    }
+    function isOwner(ws) {
+      return signedIn() &&
+        get(/databases/$(database)/documents/workspaces/$(ws)).data.ownerUid == request.auth.uid;
+    }
+
+    // My own list of shared calculators
+    match /users/{uid}/workspaces/{ws} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+    }
+
+    match /workspaces/{ws} {
+      allow create: if signedIn() && request.resource.data.ownerUid == request.auth.uid;
+      allow read: if isMember(ws);
+      allow update, delete: if isOwner(ws);
+
+      match /members/{uid} {
+        allow read: if isMember(ws);
+        allow create: if signedIn() && request.auth.uid == uid && (
+          // the owner adds themselves when creating the workspace
+          (request.resource.data.role == 'owner' &&
+            getAfter(/databases/$(database)/documents/workspaces/$(ws)).data.ownerUid == uid)
+          ||
+          // anyone else needs a valid invite code
+          (request.resource.data.role == 'editor' &&
+            exists(/databases/$(database)/documents/workspaces/$(ws)/invites/$(request.resource.data.code)))
+        );
+        allow delete: if signedIn() && (request.auth.uid == uid || isOwner(ws));
+      }
+
+      // Knowing the code is the secret, so single reads are open to signed-in users; listing is owner-only.
+      match /invites/{code} {
+        allow get: if signedIn();
+        allow list, create, delete: if isOwner(ws);
+      }
+
+      match /items/{id}  { allow read, write: if isMember(ws); }
+      match /work/{id}   { allow read, write: if isMember(ws); }
+      match /photos/{id} { allow read, write: if isMember(ws); }
+    }
+  }
+}

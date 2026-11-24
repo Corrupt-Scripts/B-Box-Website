@@ -1,0 +1,17 @@
+# Never put these on GitHub (keys, installers, builds, private working files)
+*.zip
+*.apk
+*.aab
+*.keystore
+*.jks
+keystore.properties
+.env
+.claude/
+publish/
+out/
+
+# Original screenshots and working images kept at the top of the folder (the site uses the copies in assets/)
+/*.png
+/*.jpg
+/*.jpeg
+/*.webp
