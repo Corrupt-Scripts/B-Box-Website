@@ -1,0 +1,8 @@
+{
+  // Tells Cloudflare to publish the "out" folder (made by the build command) as a static website.
+  "name": "b-box-website",
+  "compatibility_date": "2025-11-01",
+  "assets": {
+    "directory": "./out"
+  }
+}
