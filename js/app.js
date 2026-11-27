@@ -40,8 +40,8 @@ const PRODUCTS = [
     id: 'bbox-pixel-mapper', checkoutUrl: 'https://buy.polar.sh/polar_cl_GtzM16xAPNSZs3YHGIXWHVc6IeCBZYKwH853w2qoi5F',
     kind: 'software', art: 'pixel', tag: 'Software', name: 'B-Box Pixel Mapper',
     price: 150, unit: 'one-off, inc VAT',
-    blurb: 'LED pixel mapping for Windows and Mac. Draw stages from your LED strips, mix effects live, record sequences and send it all to your lights over Art-Net or sACN.',
-    specs: ['Windows and macOS', 'Art-Net and sACN output', 'One licence key activates on up to 3 computers', 'Checked each time it starts, and works offline for 7 days', 'Sign out of a computer in Settings to move your key']
+    blurb: 'LED pixel mapping for Windows. Draw stages from your LED strips, mix effects live, record sequences and send it all to your lights over Art-Net or sACN.',
+    specs: ['For Windows computers', 'Art-Net and sACN output', 'One licence key activates on up to 3 computers', 'Checked each time it starts, and works offline for 7 days', 'Sign out of a computer in Settings to move your key']
   },
   {
     id: 'bbox-android', checkoutUrl: 'https://buy.polar.sh/polar_cl_mG9rPaEXeJ9bWudzxwmwg4Q0pCt2NdRYdzqG61ebJR1',   // paste the Polar checkout link here
