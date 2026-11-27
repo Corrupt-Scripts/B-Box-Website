@@ -409,7 +409,7 @@ const Auth = (function () {
     }
     return btoa(unescape(encodeURIComponent(email + pass)));
   }
-  const LICENSED = ['bbox-desk-app', 'bbox-android'];
+  const LICENSED = ['bbox-desk-app', 'bbox-pixel-mapper', 'bbox-android'];
   const users = () => store.get('users', {});
   const demoCurrent = () => { const e = store.get('session', null); return e && users()[e] ? { email: e, ...users()[e] } : null; };
   const current = () => backend ? fbUser : demoCurrent();

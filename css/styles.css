@@ -265,6 +265,9 @@ ul { margin: 0; padding: 0; list-style: none; }
 .desk .android-shots img { max-width: none; border-radius: 12px; }
 .desk .android-shots figcaption { max-width: 340px; }
 @media (max-width: 760px) { .desk .android-shots { grid-template-columns: 1fr; } }
+.pixel .android-shots { grid-template-columns: repeat(2, 1fr); gap: 28px 20px; }
+.pixel .android-shots figcaption { max-width: 420px; }
+@media (max-width: 760px) { .pixel .android-shots { grid-template-columns: 1fr; } }
 
 /* ---------- Calculator ---------- */
 .calc-promo { margin-top: 72px; display: grid; grid-template-columns: .95fr 1.05fr; gap: 40px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 40px; }
