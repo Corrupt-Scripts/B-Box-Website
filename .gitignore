@@ -15,3 +15,7 @@ out/
 /*.jpg
 /*.jpeg
 /*.webp
+
+# Lighting Desk licence fix (working files for the app, not part of the website)
+lighting-desk-licence-fix/
+android-licence-text-fix/

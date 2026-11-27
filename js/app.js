@@ -37,6 +37,13 @@ const PRODUCTS = [
     specs: ['Programmer, layout, patch, cues and effects', 'Command line with Art-Net output', 'Licence key lives in your B-Box account']
   },
   {
+    id: 'bbox-pixel-mapper', checkoutUrl: 'https://buy.polar.sh/polar_cl_GtzM16xAPNSZs3YHGIXWHVc6IeCBZYKwH853w2qoi5F',
+    kind: 'software', art: 'pixel', tag: 'Software', name: 'B-Box Pixel Mapper',
+    price: 150, unit: 'one-off, inc VAT',
+    blurb: 'LED pixel mapping for Windows and Mac. Draw stages from your LED strips, mix effects live, record sequences and send it all to your lights over Art-Net or sACN.',
+    specs: ['Windows and macOS', 'Art-Net and sACN output', 'One licence key activates on up to 3 computers', 'Checked each time it starts, and works offline for 7 days', 'Sign out of a computer in Settings to move your key']
+  },
+  {
     id: 'bbox-android', checkoutUrl: 'https://buy.polar.sh/polar_cl_mG9rPaEXeJ9bWudzxwmwg4Q0pCt2NdRYdzqG61ebJR1',   // paste the Polar checkout link here
     kind: 'software', art: 'android', tag: 'Android app', name: 'B-Box Android',
     price: 19.99, unit: 'per licence, inc VAT',
@@ -209,6 +216,7 @@ const artSvg = {
   dmx: `<img src="assets/b-box-screen.png" alt="B-Box controller screen showing a wired DMX universe and a CRMX universe side by side" loading="lazy">`,
   crmx: `<img src="assets/b-box-screen.png" alt="B-Box controller screen showing a wired DMX universe and a CRMX universe side by side" loading="lazy">`,
   app: `<img src="assets/desk-programmer.jpg" alt="B-Box Lighting Desk, Desk page: a programmer grid of fixtures, intensity and colour controls, and a record cue panel" loading="lazy">`,
+  pixel: `<img src="assets/pixel-mapper.png" alt="B-Box Pixel Mapper app icon: a rainbow-coloured cube of LED pixels" loading="lazy">`,
   android: `<div class="shots"><img src="assets/android-live.webp" alt="B-Box Android app, Live screen showing the output of channels 1 to 512, a grand master and cue buttons" loading="lazy"><img src="assets/android-channels.webp" alt="B-Box Android app, Channels screen with a grid of channels and a command line reading 1 thru 12 at 80" loading="lazy"><img src="assets/android-effects.webp" alt="B-Box Android app, Effects screen with LED tape types and effects such as Chase, Rainbow and Candle" loading="lazy"></div>`,
   calc: `<div class="shots"><img src="assets/calc-main.webp" alt="DMX address calculator on a phone: start address, saved fixtures and the rig" loading="lazy"><img src="assets/calc-patch.webp" alt="DMX address calculator on a phone: the patch list and the saved list" loading="lazy"></div>`
 };
