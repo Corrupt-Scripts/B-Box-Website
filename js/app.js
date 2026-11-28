@@ -39,7 +39,7 @@ const PRODUCTS = [
   {
     id: 'bbox-pixel-mapper', checkoutUrl: 'https://buy.polar.sh/polar_cl_GtzM16xAPNSZs3YHGIXWHVc6IeCBZYKwH853w2qoi5F',
     kind: 'software', art: 'pixel', tag: 'Software', name: 'B-Box Pixel Mapper',
-    price: 150, unit: 'one-off, inc VAT',
+    price: 150, unit: 'per licence, inc VAT',
     blurb: 'Turns LED strips into a live canvas. Draw your fixtures on a stage, mix and layer 14 built-in effects live, and send the result to your lights over Art-Net or sACN.',
     specs: ['Windows now, macOS coming soon', 'Up to 32,768 universes over Art-Net or sACN', 'One licence key activates on up to 3 computers', 'Checked each time it starts, and works offline for 7 days', 'Sign out of a computer in Settings to move your key']
   },
