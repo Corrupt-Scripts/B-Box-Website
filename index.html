@@ -9,6 +9,7 @@
   <link rel="icon" href="assets/favicon.png" type="image/png" sizes="64x64">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/screen.css">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -97,7 +98,70 @@
           </ul>
           <a class="btn primary" href="products.html">See the controllers</a>
         </div>
-        <img class="showcase-img" src="assets/b-box-screen.png" alt="B-Box controller screen showing a wired DMX universe and a CRMX universe side by side" loading="lazy">
+        <div class="demo">
+          <div class="demo-box">
+            <div class="dev" id="dev" role="group" aria-label="Interactive B-Box controller screen">
+              <div class="dev-screen">
+                <div class="dev-top">
+                  <span class="dev-title">Live</span>
+                  <span class="dev-status">
+                    <span class="d-chip d-chip--solid" id="dTxChip">CRMX TX</span>
+                    <svg class="d-wifi" viewBox="0 0 24 18" aria-hidden="true"><path d="M1.5 6.2a15 15 0 0 1 21 0M5 10a10 10 0 0 1 14 0M8.6 13.6a5 5 0 0 1 6.8 0" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="16.2" r="1.7" fill="currentColor"/></svg>
+                    <span>2</span>
+                    <span class="d-chip d-chip--line">RX2</span>
+                    <span>82%</span>
+                    <span class="d-batt" aria-hidden="true"><i></i></span>
+                  </span>
+                </div>
+
+                <div class="dev-grid">
+                  <div class="d-tile d-master" id="dMaster" role="slider" tabindex="0" aria-label="Master level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-valuetext="100 percent">
+                    <div class="d-row"><span class="d-lab">MASTER</span><span class="d-badge">Held 3</span></div>
+                    <div class="d-big"><b id="dMasterVal">100</b><span>%</span></div>
+                    <div class="d-bar"><i id="dMasterBar" style="width:100%"></i></div>
+                  </div>
+
+                  <button class="d-tile d-cue" id="dCue" type="button" aria-label="Go to the next cue">
+                    <span class="d-lab">CUE</span>
+                    <span class="d-cuename"><b id="dCueQ">Q2</b> <span id="dCueName">Preset</span></span>
+                    <span class="d-next">Next <span id="dCueNext">Q3 Act 1 wash</span></span>
+                    <span class="d-cuebar"><span class="d-bar d-bar--thin"><i id="dCueBar" style="width:62%"></i></span><em id="dCuePct">62%</em></span>
+                  </button>
+
+                  <button class="d-tile d-univ" id="dUnivA" type="button" aria-pressed="true" aria-label="Universe 0, wired output">
+                    <span class="d-uhead"><span class="d-letter d-letter--a">A</span><b>Univ 0</b><i class="d-dot"></i></span>
+                    <span class="d-usub" id="dUnivAsub">Wired &middot; 40 fps</span>
+                    <span class="d-meter"><i class="d-fill d-fill--a" id="dFillA"></i><u></u></span>
+                  </button>
+
+                  <button class="d-tile d-univ" id="dUnivB" type="button" aria-pressed="true" aria-label="Universe 1, CRMX output">
+                    <span class="d-uhead"><span class="d-letter d-letter--b">B</span><b>Univ 1</b><i class="d-dot"></i></span>
+                    <span class="d-usub" id="dUnivBsub">CRMX &middot; signal 78%</span>
+                    <span class="d-meter"><i class="d-fill d-fill--b" id="dFillB"></i><u></u></span>
+                  </button>
+
+                  <div class="d-small">
+                    <button class="d-tile d-mini" id="dInput" type="button" aria-label="Change input source">
+                      <span class="d-lab">INPUT</span>
+                      <span class="d-val"><i class="d-dot"></i><b id="dInputVal">Art-Net</b></span>
+                    </button>
+                    <button class="d-tile d-mini" id="dTx" type="button" aria-pressed="true" aria-label="CRMX transmitter on or off">
+                      <span class="d-lab">CRMX TX</span>
+                      <span class="d-val"><i class="d-dot"></i><b id="dTxVal">Active</b></span>
+                    </button>
+                    <div class="d-tile d-mini d-mini--wide">
+                      <span class="d-lab" id="dRxLab">RECEIVERS 2</span>
+                      <span class="d-val"><i class="d-dot"></i><b id="dRxVal">64% &nbsp;41%</b></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="dev-foot"><span><b>Turn</b> master <i>&bull;</i> <b>Push</b> menu</span><span>192.168.4.1</span></div>
+              </div>
+            </div>
+          </div>
+          <p class="demo-hint"><span class="demo-pulse" aria-hidden="true"></span><span>Have a go: drag the master, tap the cue, tap a universe.</span></p>
+        </div>
       </div>
     </section>
 
@@ -164,5 +228,6 @@
   <script src="js/firebase-config.js"></script>
   <script type="module" src="js/fb.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/screen.js" defer></script>
 </body>
 </html>

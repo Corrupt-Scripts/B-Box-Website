@@ -1,0 +1,88 @@
+/* ---------- Interactive controller screen (home page) ---------- */
+.demo { min-width: 0; }
+.demo-box { container-type: inline-size; }
+.dev {
+  font-size: calc(100cqw / 60); /* 1em = 1/60 of the width, so everything scales together */
+  font-family: var(--font); color: #e9e7f2; line-height: 1.15;
+  background: linear-gradient(160deg, #1d1b2a, #14121d);
+  border-radius: 2.4em; padding: 1.4em;
+  box-shadow: 0 0 0 1px #34304a, 0 2.5em 5em rgba(0,0,0,.55), 0 0 6em rgba(139,92,246,.12);
+  user-select: none; -webkit-user-select: none;
+}
+.dev-screen { background: #0f0e16; border-radius: 1.2em; overflow: hidden; display: flex; flex-direction: column; }
+.dev-top { display: flex; align-items: center; justify-content: space-between; padding: 1.5em 1.6em 1.1em; border-bottom: .2em solid #26233a; }
+.dev-title { font-size: 2.5em; font-weight: 800; letter-spacing: -.01em; }
+.dev-status { display: flex; align-items: center; gap: .8em; font-size: 1.45em; color: #cfcce0; }
+.d-chip { padding: .22em .7em; border-radius: .45em; font-weight: 800; transition: background .2s, color .2s; }
+.d-chip--solid { background: #22c55e; color: #04210f; }
+.d-chip--solid.is-off { background: #2d2a3d; color: #8a87a0; }
+.d-chip--line { border: .14em solid #22c55e; color: #22c55e; }
+.d-wifi { width: 1.7em; height: 1.3em; color: #f1effa; }
+.d-batt { position: relative; width: 2.6em; height: 1.3em; border: .14em solid #f1effa; border-radius: .35em; padding: .12em; }
+.d-batt::after { content: ""; position: absolute; right: -.4em; top: .3em; width: .22em; height: .5em; background: #f1effa; border-radius: 0 .1em .1em 0; }
+.d-batt i { display: block; width: 100%; height: 100%; background: #22c55e; border-radius: .15em; }
+
+.dev-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1em; padding: 1.4em 1.6em .8em; }
+.d-tile {
+  font: inherit; color: inherit; text-align: left; border: .15em solid transparent;
+  background: #221f31; border-radius: 1.3em; padding: 1.1em 1.4em; min-width: 0;
+  display: flex; flex-direction: column; justify-content: space-between; cursor: pointer;
+  transition: border-color .15s, background .15s, transform .08s;
+}
+button.d-tile:hover { background: #292540; }
+button.d-tile:active { transform: scale(.985); }
+.d-tile:focus-visible { outline: .18em solid #b794ff; outline-offset: .15em; }
+.d-lab { font-size: 1.2em; font-weight: 700; letter-spacing: .02em; color: #8d8aa4; }
+
+.d-master { border-color: #8b5cf6; height: 11.6em; cursor: ew-resize; touch-action: pan-y; }
+.d-row { display: flex; justify-content: space-between; align-items: flex-start; }
+.d-badge { background: #413470; color: #c9b8ff; font-size: 1.2em; font-weight: 700; padding: .25em .7em; border-radius: .6em; margin-top: -.2em; }
+.d-big { display: flex; align-items: baseline; gap: .25em; }
+.d-big b { font-size: 5.6em; font-weight: 800; line-height: .9; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.d-big span { font-size: 2em; font-weight: 700; color: #a9a6bf; }
+.d-bar { display: block; height: 1.1em; border-radius: .6em; background: #332f48; overflow: hidden; }
+.d-bar i { display: block; height: 100%; background: #8b5cf6; border-radius: .6em; }
+.d-bar--thin { height: .9em; flex: 1; }
+.d-bar--thin i { background: #22c55e; }
+
+.d-cue { height: 11.6em; background: #1c1a2a; }
+.d-cuename { font-size: 3em; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -.01em; }
+.d-cuename b { color: #c4b2ff; }
+.d-next { font-size: 1.2em; color: #cfcce0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.d-cuebar { display: flex; align-items: center; gap: 1.2em; }
+.d-cuebar em { font-style: normal; font-weight: 800; font-size: 1.4em; color: #22c55e; font-variant-numeric: tabular-nums; min-width: 2.6em; text-align: right; }
+
+.d-univ { height: 10.8em; background: #1c1a2a; gap: .5em; }
+.d-uhead { display: flex; align-items: center; gap: .9em; }
+.d-uhead b { font-size: 2.4em; font-weight: 800; letter-spacing: -.01em; flex: 1; white-space: nowrap; }
+.d-letter { width: 2.2em; height: 2.2em; border-radius: .6em; display: grid; place-items: center; font-size: 1.9em; font-weight: 800; color: #fff; }
+.d-letter--a { background: #8b5cf6; }
+.d-letter--b { background: #38bdf8; }
+.d-dot { display: inline-block; width: 1em; height: 1em; border-radius: 50%; background: #22c55e; flex: none; transition: background .2s; }
+.d-usub { font-size: 1.4em; color: #cfcce0; white-space: nowrap; }
+.d-meter { position: relative; display: block; height: 1.1em; border-radius: .6em; background: #332f48; margin-top: .3em; }
+.d-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: .6em; width: 18%; }
+.d-fill--a { background: #c4b5fd; }
+.d-fill--b { background: #38bdf8; }
+.d-meter u { position: absolute; right: 12%; top: -.35em; bottom: -.35em; width: .3em; background: #fff; border-radius: .1em; text-decoration: none; }
+.d-univ.is-off .d-dot { background: #4a4760; }
+.d-univ.is-off .d-usub { color: #77748c; }
+
+.d-small { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr 1.28fr; gap: 1.1em; }
+.d-mini { height: 5.8em; padding: .9em 1.3em; gap: .2em; }
+.d-mini--wide { cursor: default; }
+.d-val { display: flex; align-items: center; gap: .7em; }
+.d-val b { font-size: 1.9em; font-weight: 700; white-space: nowrap; }
+.d-val .d-dot { width: .95em; height: .95em; }
+.d-mini.is-off .d-dot { background: #4a4760; }
+.d-mini.is-off b { color: #77748c; }
+
+.dev-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 1.4em; padding: .9em 1.6em; border-top: .2em solid #26233a; font-size: 1.25em; color: #8d8aa4; }
+.dev-foot b { color: #b9a4ff; font-weight: 600; }
+.dev-foot i { font-style: normal; margin: 0 .4em; }
+
+.demo-hint { display: flex; align-items: center; justify-content: center; gap: .7em; margin-top: 18px; font-size: .88rem; color: var(--muted); text-align: center; }
+.demo-pulse { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 rgba(178,92,255,.6); animation: demoPulse 2s infinite; flex: none; }
+.demo.is-used .demo-pulse { animation: none; opacity: .4; }
+@keyframes demoPulse { 70% { box-shadow: 0 0 0 9px rgba(178,92,255,0); } 100% { box-shadow: 0 0 0 0 rgba(178,92,255,0); } }
+@media (prefers-reduced-motion: reduce) { .demo-pulse { animation: none; } }
